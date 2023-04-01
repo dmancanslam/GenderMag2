@@ -13,7 +13,7 @@ interface DLQueue <E> {
 	public int size();
 }
 
-public class DLHeap<E> extends Song<String, String, String, Integer> implements DLQueue<E> {
+public class DLHeap<E> implements DLQueue<E> {
 	
 	static class MinMaxheap<E> implements Comparator<E> {
 		@Override
@@ -114,31 +114,19 @@ public class DLHeap<E> extends Song<String, String, String, Integer> implements 
 	public void printHeap() {
 		System.out.println(this.list);
 	}
-
 	
-	public static <E extends Comparable<E>> void heapSort(E[] list) {
+	public void heapSort(ArrayList<Song<String, String, String, String>> songArray) {
 		// Create a Heap of integers
-		DLHeap<E> heap = new DLHeap<>();
+		DLHeap<Song<String, String, String, String>> heap = new DLHeap<>();
 
 		// Add elements to the heap
-		for (int i = 0; i < list.length; i++)
-			heap.add(list[i]);
+		for (int i = 0; i < songArray.size(); i++)
+			heap.add(songArray.get(i));
 
 		// Remove elements from the heap
-		for (int i = list.length-1; i >= 0; i--){
-			list[i] = heap.remove();
+		for (int i = songArray.size()-1; i >= 0; i--){
+			songArray.add(i,heap.remove()); 
 		}
-	}
-	
-	public static void printSortedHeap(ArrayList<Integer> list) {
-		Integer[] array = list.toArray(new Integer[0]);
-		heapSort(array);
-		for(int i=0;i<6;i++){											// for loop to print elements in a heap format
-	        for(int j=0;j<Math.pow(2,i)&&j+Math.pow(2,i)<array.length;j++){		
-	            System.out.print(array[j+(int)Math.pow(2,i)-1]+" ");
-	        }
-	        System.out.println();
-	    }
 	}
 	
 
@@ -187,16 +175,15 @@ public class DLHeap<E> extends Song<String, String, String, Integer> implements 
 
 	public static void main(String[] args) {
 		File songFile = new File("newSongs.txt");
-		DLHeap<String> heap = new DLHeap<String>(new MinMaxheap<String>());
-		ArrayList<String> list = new ArrayList<String>();
-		ArrayList<Integer> intList = new ArrayList<Integer>();
+		DLHeap<Song<String, String, String, String>> heap = new DLHeap(new MinMaxheap());
+		ArrayList<Song<String, String, String, String>> songArray = new ArrayList();	
+		
 		try {
 			Scanner reader = new Scanner(songFile);
 			while (reader.hasNextLine()) {
 				String[] tokens = reader.nextLine().split(",");
-				list.add(tokens[0]);
-				intList.add(Integer.parseInt(tokens[3].replace(":", ""))); // here we are taking the length of the song and
-			}															// changing it to an integer that can be sorted
+				songArray.add(new Song<String, String, String, String>(tokens[0],tokens[1],tokens[2], tokens[3]));
+			}
 			reader.close();												
 		} catch (Exception e) {
 			System.out.println("No good file");
@@ -204,9 +191,10 @@ public class DLHeap<E> extends Song<String, String, String, Integer> implements 
 		}
 
 		for (int i=0; i < 21; i++) {
-			heap.add(list.get(i));//task 7
+			heap.add(songArray.get(i));//task 7
 		}
 		heap.printHeap(); //task 7.5
+	
 		
 		heap.remove(); //task 8
 		heap.remove(); //task 8
@@ -215,7 +203,13 @@ public class DLHeap<E> extends Song<String, String, String, Integer> implements 
 		heap.remove(); //task 8
 		heap.printHeap(); //task 8.5
 		
-		printSortedHeap(intList); //task 10
+		heap.heapSort(songArray); //task 11
+		for(Song<String,String,String,String> e:songArray) {
+			System.out.println(e.getSongData1()); // task 10
+		}
+		
+		
+		
 
 	}
 }

@@ -3,7 +3,7 @@ package genderMag2;
 import java.io.*;
 import java.util.*;
 
-public class Song<E, T, K, S> {
+public class Song<E, T, K, S> implements Comparable{
 	private E songData1;
 	private T songData2;
 	private K songData3;
@@ -186,6 +186,12 @@ public class Song<E, T, K, S> {
 		 * songWriter.close();//always gotta close files after use reader.close(); }
 		 * catch(Exception e) { System.out.println("e"); }
 		 */
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
